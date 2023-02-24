@@ -14,6 +14,10 @@ public class SensorsService {
         this.sensorsRepository = sensorsRepository;
     }
 
+    public Sensor findByName(String name) {
+        return sensorsRepository.findByName(name);
+    }
+
     @Transactional
     public void save(Sensor sensor) {
         sensorsRepository.save(sensor);
