@@ -1,8 +1,10 @@
 package org.weathersensor.SpringRESTWeatherSensor.models;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "measurement")
@@ -20,7 +22,9 @@ public class Measurement {
     private boolean raining;
 
     @Column(name = "time")
-    private Timestamp time;
+    @Temporal(TemporalType.TIMESTAMP)
+//    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private Date time;
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
@@ -30,7 +34,7 @@ public class Measurement {
 
     }
 
-    public Measurement(float value, boolean raining, Timestamp time, Sensor sensor) {
+    public Measurement(float value, boolean raining, Date time, Sensor sensor) {
         this.value = value;
         this.raining = raining;
         this.time = time;
@@ -61,11 +65,11 @@ public class Measurement {
         this.raining = raining;
     }
 
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
