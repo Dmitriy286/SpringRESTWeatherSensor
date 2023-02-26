@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface SensorsRepository extends JpaRepository<Sensor, Integer> {
 
-    Optional<Sensor> findByName(String name);
+    Optional<Sensor> findByNameIgnoreCase(String name);
+
+    void deleteByNameIgnoreCase(String name);
 
 }

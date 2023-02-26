@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class SensorsService {
@@ -14,12 +16,30 @@ public class SensorsService {
         this.sensorsRepository = sensorsRepository;
     }
 
+    public List<Sensor> findAll() {
+        return sensorsRepository.findAll();
+    }
+
     public Sensor findByName(String name) {
-        return sensorsRepository.findByName(name).orElse(null);
+        return sensorsRepository.findByNameIgnoreCase(name).orElse(null);
     }
 
     @Transactional
     public void save(Sensor sensor) {
         sensorsRepository.save(sensor);
+    }
+
+    @Transactional
+    public Sensor update(String name, Sensor updatedSensor) {
+        updatedSensor.setName(name);
+        sensorsRepository.save(updatedSensor);
+
+        return updatedSensor;
+    }
+
+
+    @Transactional
+    public void delete(Sensor sensor) {
+        sensorsRepository.delete(sensor);
     }
 }
