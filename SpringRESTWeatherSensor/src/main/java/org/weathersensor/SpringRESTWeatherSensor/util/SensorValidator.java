@@ -6,8 +6,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
+import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
+
+import java.lang.reflect.Field;
 
 @Component
 public class SensorValidator implements Validator {
@@ -25,9 +28,14 @@ public class SensorValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        SensorDTO sensorDTO = (SensorDTO) target;
-        if (sensorsService.findByName(sensorDTO.getName()) != null) {
-            errors.rejectValue("name", String.valueOf(HttpStatus.CONFLICT), "Sensor with such name already exists");
+        try {
+            SensorDTO sensorDTO = (SensorDTO) target;
+            if (sensorsService.findByName(sensorDTO.getName()) != null) {
+                errors.rejectValue("newName", String.valueOf(HttpStatus.CONFLICT), "Sensor with such name already exists");
+            }
+        } catch (Exception e) {
+            System.out.println("It is not SensorDTO");
         }
+
     }
 }

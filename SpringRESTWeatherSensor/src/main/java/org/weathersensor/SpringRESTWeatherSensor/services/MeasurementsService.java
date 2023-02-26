@@ -6,8 +6,6 @@ import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.MeasurementsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
