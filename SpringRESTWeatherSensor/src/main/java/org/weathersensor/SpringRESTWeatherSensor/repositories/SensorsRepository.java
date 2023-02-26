@@ -6,9 +6,11 @@ import org.springframework.stereotype.Repository;
 import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 
+import java.util.Optional;
+
 @Repository
 public interface SensorsRepository extends JpaRepository<Sensor, Integer> {
 
-    Sensor findByName(String name);
+    Optional<Sensor> findByName(String name);
 
 }

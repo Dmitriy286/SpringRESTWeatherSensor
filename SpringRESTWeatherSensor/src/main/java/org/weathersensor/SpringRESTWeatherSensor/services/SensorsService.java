@@ -15,7 +15,7 @@ public class SensorsService {
     }
 
     public Sensor findByName(String name) {
-        return sensorsRepository.findByName(name);
+        return sensorsRepository.findByName(name).orElse(null);
     }
 
     @Transactional

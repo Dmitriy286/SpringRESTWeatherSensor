@@ -8,6 +8,7 @@ import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,6 @@ public class MeasurementsService {
 
 
     private void enrichMeasurement(Measurement measurement) {
-        measurement.setTime(Timestamp.valueOf(LocalDateTime.now()));
+        measurement.setTime(new Date());
     }
 }
