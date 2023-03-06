@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info:
+  title: Operator
+  version: "1.0.0"
+paths:
+  /operators:
+    get:
+      description: Returns all operators
+      responses:
+        '200':
+          description: Returns an array of operators
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Operator'
+  /operator:
+    get:
+      description: Returns an operator
+      responses:
+        '200':
+          description: Returns an operator
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Operator'
+components:
+  schemas:
+    Operator:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
