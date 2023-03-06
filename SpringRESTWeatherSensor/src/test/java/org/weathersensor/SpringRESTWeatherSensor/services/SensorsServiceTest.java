@@ -3,20 +3,16 @@ package org.weathersensor.SpringRESTWeatherSensor.services;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
+import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@ExtendWith(MockitoExtension.class)
 class SensorsServiceTest {
@@ -25,12 +21,16 @@ class SensorsServiceTest {
     private SensorsRepository sensorsRepository;
 
 //    @InjectMocks
-    private SensorsService sensorsService;
+    private SensorsServiceImpl sensorsService;
+
+    private ModelMapper modelMapper;
+
 
     @BeforeEach
     public void setUp() {
         sensorsRepository = Mockito.mock(SensorsRepository.class);
-        sensorsService = new SensorsService(sensorsRepository);
+        modelMapper = new ModelMapper();
+        sensorsService = new SensorsServiceImpl(sensorsRepository, modelMapper);
     }
 
     @Test
@@ -40,10 +40,10 @@ class SensorsServiceTest {
         Mockito.when(sensorsRepository.findAll()).thenReturn(sensorList);
 
         List<Sensor> expectedSensorList = getSensorList();
-        List<Sensor> resultSensorList = sensorsService.findAll();
+        List<SensorDTO> resultSensorDTOList = sensorsService.findAll();
 
-        Assertions.assertNotNull(resultSensorList);
-        Assertions.assertEquals(expectedSensorList.toString(), resultSensorList.toString());
+        Assertions.assertNotNull(resultSensorDTOList);
+        Assertions.assertEquals(expectedSensorList.toString(), resultSensorDTOList.toString());
     }
 
     @Test
@@ -52,10 +52,10 @@ class SensorsServiceTest {
         Sensor expectedSensor = sensorList.get(0);
         Mockito.when(sensorsRepository.findByNameIgnoreCase("First")).thenReturn(Optional.of(new Sensor("First")));
 
-        Sensor resultSensor = sensorsService.findByName("First");
+        SensorDTO resultSensorDTO = sensorsService.findByName("First");
 
-        Assertions.assertNotNull(resultSensor);
-        Assertions.assertEquals(expectedSensor.getName(), resultSensor.getName());
+        Assertions.assertNotNull(resultSensorDTO);
+        Assertions.assertEquals(expectedSensor.getName(), resultSensorDTO.getName());
     }
 
     @Test

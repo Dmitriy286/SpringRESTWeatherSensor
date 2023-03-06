@@ -1,28 +1,11 @@
 package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -33,19 +16,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
-import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
+import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorValidator;
 
 import java.util.*;
 
-import java.util.function.Function;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 
 //@ExtendWith(SpringExtension.class)
@@ -58,7 +37,7 @@ class SensorControllerTest {
 
 //    @MockBean
 //    @InjectMocks
-    private SensorsService sensorsService;
+    private SensorsServiceImpl sensorsService;
 
 //    @MockBean
     private SensorsRepository sensorsRepository;
@@ -77,11 +56,11 @@ class SensorControllerTest {
     @BeforeEach
     public void setup() {
         sensorsRepository = Mockito.mock(SensorsRepository.class);
-        sensorsService = new SensorsService(sensorsRepository);
         modelMapper = new ModelMapper();
+        sensorsService = new SensorsServiceImpl(sensorsRepository, modelMapper);
         sensorValidator = new SensorValidator(sensorsService);
-        sensorController = new SensorController(sensorsService, modelMapper, sensorValidator);
-        mockMvc = MockMvcBuilders.standaloneSetup(new SensorController(sensorsService, modelMapper, sensorValidator)).build();
+        sensorController = new SensorController(sensorsService, sensorValidator);
+        mockMvc = MockMvcBuilders.standaloneSetup(new SensorController(sensorsService, sensorValidator)).build();
     }
 
     @Test

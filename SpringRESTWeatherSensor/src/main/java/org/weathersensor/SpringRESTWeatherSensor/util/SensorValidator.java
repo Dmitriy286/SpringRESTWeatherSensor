@@ -6,18 +6,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
-import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
-
-import java.lang.reflect.Field;
+import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
 
 @Component
 public class SensorValidator implements Validator {
-    private final SensorsService sensorsService;
+    private final SensorsServiceImpl sensorsService;
 
     @Autowired
-    public SensorValidator(SensorsService sensorsService) {
+    public SensorValidator(SensorsServiceImpl sensorsService) {
         this.sensorsService = sensorsService;
     }
 

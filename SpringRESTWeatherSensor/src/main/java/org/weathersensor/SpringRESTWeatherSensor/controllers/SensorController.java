@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
-import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
+import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorErrorResponse;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotCreatedException;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotFoundException;
@@ -19,37 +19,27 @@ import org.weathersensor.SpringRESTWeatherSensor.util.SensorValidator;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/sensors")
 public class SensorController {
-    private final SensorsService sensorsService;
-    private final ModelMapper modelMapper;
+    private final SensorsServiceImpl sensorsService;
     private final SensorValidator sensorValidator;
 
     @Autowired
-    public SensorController(SensorsService sensorsService, ModelMapper modelMapper, SensorValidator sensorValidator) {
+    public SensorController(SensorsServiceImpl sensorsService, SensorValidator sensorValidator) {
         this.sensorsService = sensorsService;
-        this.modelMapper = modelMapper;
         this.sensorValidator = sensorValidator;
     }
 
     @GetMapping
     public List<SensorDTO> getSensors() {
-        List<SensorDTO> sensorDTOList = sensorsService.findAll().stream().map(this::convertToSensorDTO).toList();
-
-        return sensorDTOList;
+        return sensorsService.findAll();
     }
 
     @GetMapping("/{name}")
     public SensorDTO getSensorByName(@PathVariable("name") String name) {
-        if (sensorsService.findByName(name) == null) {
-            throw new SensorNotFoundException("Sensor with such name does not exist");
-        }
-        SensorDTO sensorDTO = convertToSensorDTO(sensorsService.findByName(name));
-
-        return sensorDTO;
+        return sensorsService.findByName(name);
     }
 
     @PostMapping("/registration")
@@ -68,15 +58,12 @@ public class SensorController {
                         .append(error.getDefaultMessage())
                         .append(";");
             }
-
             throw new SensorNotCreatedException(errorMessage.toString());
         }
+        sensorsService.save(sensorDTO);
 
-        sensorsService.save(convertToSensor(sensorDTO));
+        return new ResponseEntity<>("Sensor has been added", HttpStatus.CREATED);
 
-        ResponseEntity<String> response = new ResponseEntity<>("Sensor has been added", HttpStatus.CREATED);
-
-        return response;
     }
 
     @PatchMapping("/update")
@@ -103,23 +90,16 @@ public class SensorController {
             throw new SensorNotFoundException("Sensor with such name does not exist");
         }
 
-        sensorsService.update(updatedSensorDTO.getNewName(), convertToSensor(updatedSensorDTO));
+        sensorsService.update(updatedSensorDTO);
 
-        ResponseEntity<String> response = new ResponseEntity<>("Sensor has been updated", HttpStatus.ACCEPTED);
-
-        return response;
+        return new ResponseEntity<>("Sensor has been updated", HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete")
     private ResponseEntity<String> deleteSensor(@RequestBody SensorDTO sensorDTO) {
-        if (sensorsService.findByName(sensorDTO.getName()) == null) {
-            throw new SensorNotFoundException("Sensor with such name does not exist");
-        }
-        sensorsService.delete(convertToSensor(sensorDTO));
+        sensorsService.delete(sensorDTO);
 
-        ResponseEntity<String> response = new ResponseEntity<>("Sensor has been deleted", HttpStatus.OK);
-
-        return response;
+        return new ResponseEntity<>("Sensor has been deleted", HttpStatus.OK);
     }
 
     @ExceptionHandler
@@ -144,26 +124,5 @@ public class SensorController {
         return responseEntity;
     }
 
-    private Sensor convertToSensor(SensorDTO sensorDTO) {
-        Sensor sensor = modelMapper.map(sensorDTO, Sensor.class);
 
-        return sensor;
-    }
-
-    private Sensor convertToSensor(UpdatedSensorDTO updatedSensorDTO) {
-        Sensor sensor = modelMapper.map(updatedSensorDTO, Sensor.class);
-        int id = sensorsService.findByName(updatedSensorDTO.getName()).getId();
-        sensor.setId(id);
-
-        return sensor;
-    }
-
-    private SensorDTO convertToSensorDTO(Sensor sensor) {
-        System.out.println("Init converting...");
-        System.out.println(sensor);
-        SensorDTO sensorDTO = modelMapper.map(sensor, SensorDTO.class);
-        System.out.println("sensorDTO:");
-        System.out.println(sensorDTO);
-        return sensorDTO;
-    }
 }
