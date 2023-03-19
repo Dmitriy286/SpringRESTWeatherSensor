@@ -1,17 +1,18 @@
 package org.weathersensor.SpringRESTWeatherSensor.dto;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 
 public class MeasurementDTO {
 
-    @NotEmpty
-    @Size(min = -100, max = 100)
+//    @NotEmpty
+//    @Size(min = -100, max = 100)
     private float value;
-    @NotEmpty
+//    @NotEmpty
     private boolean raining;
-    @NotEmpty
+//    @NotEmpty
     private Sensor sensor;
 
     public float getValue() {

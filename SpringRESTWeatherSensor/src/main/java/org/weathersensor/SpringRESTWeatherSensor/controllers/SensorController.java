@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
+import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
 import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorErrorResponse;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotCreatedException;
@@ -23,11 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/sensors")
 public class SensorController {
-    private final SensorsServiceImpl sensorsService;
+    private final SensorsService sensorsService;
     private final SensorValidator sensorValidator;
 
     @Autowired
-    public SensorController(SensorsServiceImpl sensorsService, SensorValidator sensorValidator) {
+    public SensorController(SensorsService sensorsService, SensorValidator sensorValidator) {
         this.sensorsService = sensorsService;
         this.sensorValidator = sensorValidator;
     }

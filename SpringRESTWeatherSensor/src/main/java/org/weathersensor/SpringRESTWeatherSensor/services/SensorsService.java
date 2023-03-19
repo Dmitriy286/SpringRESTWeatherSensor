@@ -18,4 +18,5 @@ public interface SensorsService {
     SensorDTO update(UpdatedSensorDTO updatedSensorDTO);
 
     void delete(SensorDTO sensorDTO);
+
 }
