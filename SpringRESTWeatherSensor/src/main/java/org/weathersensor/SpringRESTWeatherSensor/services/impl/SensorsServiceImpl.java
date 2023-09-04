@@ -8,7 +8,7 @@ import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
-import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotFoundException;
+import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotFoundException;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class SensorsServiceImpl implements SensorsService {
 
     @Transactional
     public void save(SensorDTO sensorDTO) {
-        sensorsRepository.save(convertToSensor(sensorDTO));
+        sensorsRepository.save(convertToSensorDTO(sensorDTO));
     }
 
     @Transactional
@@ -61,10 +61,10 @@ public class SensorsServiceImpl implements SensorsService {
         if (deletedSensor == null) {
             throw new SensorNotFoundException("Sensor with such name does not exist");
         }
-        sensorsRepository.delete(convertToSensor(sensorDTO));
+        sensorsRepository.delete(convertToSensorDTO(sensorDTO));
     }
 
-    private Sensor convertToSensor(SensorDTO sensorDTO) {
+    private Sensor convertToSensorDTO(SensorDTO sensorDTO) {
         Sensor sensor = modelMapper.map(sensorDTO, Sensor.class);
 
         return sensor;

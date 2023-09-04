@@ -7,14 +7,15 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
+import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
 import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
 
 @Component
 public class SensorValidator implements Validator {
-    private final SensorsServiceImpl sensorsService;
+    private final SensorsService sensorsService;
 
     @Autowired
-    public SensorValidator(SensorsServiceImpl sensorsService) {
+    public SensorValidator(SensorsService sensorsService) {
         this.sensorsService = sensorsService;
     }
 

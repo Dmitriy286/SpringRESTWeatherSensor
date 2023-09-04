@@ -2,10 +2,24 @@ openapi: 3.0.3
 info:
   title: Operator
   version: "1.0.0"
+servers:
+  - url: http://localhost:6060
+    description: Dev Server
+tags:
+  - name: operator
+    description: managing operators
+
 paths:
   /operators:
     get:
-      description: Returns all operators
+      summary: Get operators
+      description: Returns all/filtered by name or number operators
+      tags:
+        - operator
+      operationId: getOperators
+      parameters:
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/personalNumber'
       responses:
         '200':
           description: Returns an array of operators
@@ -14,22 +28,82 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Operator'
-  /operator:
+                  $ref: '#/components/schemas/OperatorDTO'
+        '204':
+          description: No data
+          content: {}
+        '404':
+          description: Not found
+#          content:
+#            application/json:
+#              schema:
+#                $ref: ''
+        '500':
+          description: Internal server error
+  /operators/{operatorId}:
     get:
       description: Returns an operator
+      tags:
+        - operator
+      parameters:
+        - $ref: '#/components/parameters/operatorId'
+      operationId: getOperator
+
       responses:
         '200':
           description: Returns an operator
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Operator'
+                $ref: '#/components/schemas/OperatorDTO'
+        '204':
+          description: No data
+          content: {}
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
 components:
+
+  parameters:
+    name:
+      name: name
+      in: query
+      description: Operator's name
+      required: false
+      schema:
+        type: string
+    personalNumber:
+      name: personalNumber
+      in: query
+      description: Operator's number
+      required: false
+      schema:
+        type: integer
+        format: int64
+    operatorId:
+      name: operatorId
+      in: path
+      description: Operator's id
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+
   schemas:
-    Operator:
+    OperatorDTO:
+      title: "OperatorDTO"
+      type: object
+      description: Data transfer object for Operator entity
+      required:
+        - name
+        - personalNumber
       properties:
-        id:
-          type: integer
         name:
           type: string
+          example: 'Bob'
+        personalNumber:
+          type: integer
+          example: 1234
+

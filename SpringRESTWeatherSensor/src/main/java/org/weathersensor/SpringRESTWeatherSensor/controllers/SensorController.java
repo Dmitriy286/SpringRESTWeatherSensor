@@ -1,7 +1,6 @@
 package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +9,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
-import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
-import org.weathersensor.SpringRESTWeatherSensor.util.SensorErrorResponse;
-import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotCreatedException;
-import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotFoundException;
+import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
+import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorErrorResponse;
+import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotCreatedException;
+import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotFoundException;
 import org.weathersensor.SpringRESTWeatherSensor.util.SensorValidator;
 
 import java.util.Date;
@@ -23,11 +21,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/sensors")
 public class SensorController {
-    private final SensorsServiceImpl sensorsService;
+    private final SensorsService sensorsService;
     private final SensorValidator sensorValidator;
 
     @Autowired
-    public SensorController(SensorsServiceImpl sensorsService, SensorValidator sensorValidator) {
+    public SensorController(SensorsService sensorsService, SensorValidator sensorValidator) {
         this.sensorsService = sensorsService;
         this.sensorValidator = sensorValidator;
     }

@@ -1,5 +1,8 @@
 package org.weathersensor.SpringRESTWeatherSensor.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -8,6 +11,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "measurement")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Measurement {
 
     @Id
@@ -28,6 +34,7 @@ public class Measurement {
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
+//    @JsonBackReference
     private Sensor sensor;
 
     public Measurement() {
@@ -80,6 +87,4 @@ public class Measurement {
     public void setSensor(Sensor sensor) {
         this.sensor = sensor;
     }
-
-
 }
