@@ -1,4 +1,4 @@
-package org.weathersensor.SpringRESTWeatherSensor.util;
+package org.weathersensor.SpringRESTWeatherSensor.exceptions;
 
 public class SensorNotCreatedException extends RuntimeException {
 

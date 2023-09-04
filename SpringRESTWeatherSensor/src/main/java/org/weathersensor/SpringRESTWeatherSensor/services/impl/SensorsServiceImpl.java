@@ -8,7 +8,7 @@ import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
-import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotFoundException;
+import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotFoundException;
 
 import java.util.List;
 

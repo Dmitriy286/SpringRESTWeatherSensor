@@ -1,6 +1,5 @@
 package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
-import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,14 +7,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.weathersensor.SpringRESTWeatherSensor.dto.MeasurementDTO;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementsService;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
-import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
-import org.weathersensor.SpringRESTWeatherSensor.util.MeasurementNotFoundException;
+import org.weathersensor.SpringRESTWeatherSensor.exceptions.MeasurementNotFoundException;
 import org.weathersensor.SpringRESTWeatherSensor.util.MeasurementValidator;
-import org.weathersensor.SpringRESTWeatherSensor.util.SensorNotFoundException;
 
 import java.util.List;
 
