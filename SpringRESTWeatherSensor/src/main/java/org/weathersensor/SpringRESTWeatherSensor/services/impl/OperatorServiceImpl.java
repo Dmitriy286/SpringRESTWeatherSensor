@@ -22,8 +22,7 @@ public class OperatorServiceImpl implements OperatorsService {
 
     @Override
     public OperatorDTO getById(Long operatorId) {
-        Operator foundOperator = operatorsRepository.findById(operatorId)
-                //TODO: динамический id
+        var foundOperator = operatorsRepository.findById(operatorId)
                 .orElseThrow(() -> new NotFoundException(ExceptionEnum.OPERATOR_NOT_FOUND_EXCEPTION.getMessage()));
 
         return operatorMapper.operatorToOperatorDTO(foundOperator);
@@ -31,8 +30,8 @@ public class OperatorServiceImpl implements OperatorsService {
 
     @Override
     public List<OperatorDTO> getByNameOrNumber(String name, Long personalNumber) {
-        OperatorsSpecifications filter = new OperatorsSpecifications();
-        List<Operator> operators = operatorsRepository.findAll(filter.getSpecification(name, personalNumber));
+        var filter = new OperatorsSpecifications();
+        var operators = operatorsRepository.findAll(filter.getSpecification(name, personalNumber));
 
         if (operators.isEmpty()) {
             throw new NotFoundException(ExceptionEnum.OPERATOR_NOT_FOUND_EXCEPTION.getMessage());

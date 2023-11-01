@@ -50,6 +50,11 @@ public class MeasurementsController {
         return measurementsService.getRainyDaysCount();
     }
 
+
+
+
+
+
     //    @GetMapping("/{sensorId}")
     //    public List<MeasurementDTO> getSensorByName(@PathVariable("sensorId") int sensorId) {
     //        return sensorsService.findByName(name);
