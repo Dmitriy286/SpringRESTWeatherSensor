@@ -1,0 +1,22 @@
+server:
+  port: 6161
+  servlet:
+    context-path: /
+
+spring:
+  jpa:
+    show_sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/weather_app_db
+    username: postgres
+    password: postgres
+
+jwt:
+  secret: SECRET
+#  lifetime: 5m
+  lifetime: 5

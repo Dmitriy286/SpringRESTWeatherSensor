@@ -1,6 +1,5 @@
 package org.weathersensor.SpringRESTWeatherSensor.constants;
 
-import jakarta.persistence.Access;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

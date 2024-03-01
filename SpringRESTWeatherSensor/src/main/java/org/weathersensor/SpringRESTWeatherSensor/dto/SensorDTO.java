@@ -1,7 +1,8 @@
 package org.weathersensor.SpringRESTWeatherSensor.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class SensorDTO {
     @NotEmpty(message = "Name should not be empty")

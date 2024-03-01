@@ -3,7 +3,7 @@ info:
   title: Operator
   version: "1.0.0"
 servers:
-  - url: http://localhost:6060
+  - url: http://localhost:6161
     description: Dev Server
 tags:
   - name: operator
@@ -40,6 +40,28 @@ paths:
 #                $ref: ''
         '500':
           description: Internal server error
+    post:
+      summary: Create new operator
+      description: Create new operator
+      tags:
+        - operator
+      operationId: addOperator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorDTO'
+      responses:
+        '201':
+          description: Returns ok status
+        '204':
+          description: No data
+          content: { }
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+
   /operators/{operatorId}:
     get:
       description: Returns an operator
@@ -48,7 +70,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/operatorId'
       operationId: getOperator
-
       responses:
         '200':
           description: Returns an operator
@@ -99,6 +120,8 @@ components:
       required:
         - name
         - personalNumber
+        - username
+        - password
       properties:
         name:
           type: string
@@ -106,8 +129,15 @@ components:
         personalNumber:
           type: integer
           example: 1234
+        username:
+          type: string
+          example: 'bob'
+        password:
+          type: string
+          example: 'qwerty'
+
     ExceptionModel:
-      title: "OperatorDTO"
+      title: "ExceptionModel"
       type: object
       description: Service error
       properties:

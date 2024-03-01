@@ -32,6 +32,8 @@ public class SensorValidator implements Validator {
                 errors.rejectValue("newName", String.valueOf(HttpStatus.CONFLICT), "Sensor with such name already exists");
             }
         } catch (Exception e) {
+            e.printStackTrace();
+
             System.out.println("It is not SensorDTO");
         }
 

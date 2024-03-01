@@ -1,15 +1,23 @@
 package org.weathersensor.SpringRESTWeatherSensor.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "sensor")
 //@JsonIdentityInfo(
@@ -31,43 +39,5 @@ public class Sensor {
 //    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Measurement> measurementList;
 
-    public Sensor() {
 
-    }
-
-    public Sensor(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Measurement> getMeasurementList() {
-        return measurementList;
-    }
-
-    public void setMeasurementList(List<Measurement> measurementList) {
-        this.measurementList = measurementList;
-    }
-
-    @Override
-    public String toString() {
-        return "Sensor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

@@ -2,9 +2,9 @@ package org.weathersensor.SpringRESTWeatherSensor.exceptions;
 
 import org.weathersensor.SpringRESTWeatherSensor.dto.ExceptionModel;
 
-public class NotFoundException extends ExceptionResponse{
+public class ConflictException extends ExceptionResponse{
 
-    public NotFoundException(ExceptionModel exceptionModel) {
+    public ConflictException(ExceptionModel exceptionModel) {
         super(exceptionModel);
     }
 }
