@@ -69,11 +69,13 @@ public class SensorsServiceImpl implements SensorsService {
 
     private Sensor convertToSensor(UpdatedSensorDTO updatedSensorDTO) {
         Sensor sensor = modelMapper.map(updatedSensorDTO, Sensor.class);
+
         Sensor currentSensor = sensorsRepository.findByNameIgnoreCase(updatedSensorDTO.getName()).orElse(null);
         if (currentSensor == null) {
             throw new SensorNotFoundException("Sensor with such name does not exist");
         }
-        int id = currentSensor.getId();
+
+        Long id = currentSensor.getId();
         sensor.setId(id);
 
         return sensor;

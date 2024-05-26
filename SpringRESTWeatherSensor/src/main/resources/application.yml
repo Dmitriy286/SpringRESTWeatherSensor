@@ -16,7 +16,18 @@ spring:
     username: postgres
     password: postgres
 
+  kafka:
+    bootstrap-servers: 'localhost:9092'
+    client-id: 'weather-producer'
+
+#application:
+#  kafka:
+#    topic: 'measurements'
+
 jwt:
   secret: SECRET
 #  lifetime: 5m
   lifetime: 5
+
+
+

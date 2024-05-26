@@ -6,17 +6,17 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.weathersensor.SpringRESTWeatherSensor.dto.MeasurementDto;
 import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
-import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementsService;
+import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementService;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
 
 @Component
 public class MeasurementValidator implements Validator {
-    private final MeasurementsService measurementsService;
+    private final MeasurementService measurementService;
     private final SensorsService sensorsService;
 
 
-    public MeasurementValidator(MeasurementsService measurementsService, SensorsService sensorsService) {
-        this.measurementsService = measurementsService;
+    public MeasurementValidator(MeasurementService measurementService, SensorsService sensorsService) {
+        this.measurementService = measurementService;
         this.sensorsService = sensorsService;
     }
 

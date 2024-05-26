@@ -1,8 +1,9 @@
 package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,16 +25,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/sensors")
 public class SensorController {
+
     private final SensorsService sensorsService;
     private final SensorValidator sensorValidator;
-
-    @Autowired
-    public SensorController(SensorsService sensorsService, SensorValidator sensorValidator) {
-        this.sensorsService = sensorsService;
-        this.sensorValidator = sensorValidator;
-    }
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @GetMapping
     public List<SensorDTO> getSensors() {
@@ -46,10 +44,10 @@ public class SensorController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<String> register(@RequestBody @Valid SensorDTO sensorDTO,
+    public ResponseEntity<String> register(@RequestBody @Valid SensorDTO sensorDto,
                                            BindingResult bindingResult) {
 
-        sensorValidator.validate(sensorDTO, bindingResult);
+        sensorValidator.validate(sensorDto, bindingResult);
 
         if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
@@ -64,7 +62,9 @@ public class SensorController {
             }
             throw new SensorNotCreatedException(errorMessage.toString());
         }
-        sensorsService.save(sensorDTO);
+        sensorsService.save(sensorDto);
+
+        sendMessageToKafka(sensorDto);
 
         return new ResponseEntity<>("Sensor has been added", HttpStatus.CREATED);
 
@@ -104,5 +104,9 @@ public class SensorController {
         sensorsService.delete(sensorDTO);
 
         return new ResponseEntity<>("Sensor has been deleted", HttpStatus.OK);
+    }
+
+    private void sendMessageToKafka(SensorDTO sensorDto) {
+        kafkaTemplate.send("new-sensors", sensorDto);
     }
 }
