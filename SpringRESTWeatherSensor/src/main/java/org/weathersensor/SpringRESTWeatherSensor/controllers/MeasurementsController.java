@@ -2,14 +2,11 @@ package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.weathersensor.SpringRESTWeatherSensor.dto.MeasurementDto;
-import org.weathersensor.SpringRESTWeatherSensor.security.OperatorDetails;
-import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementsService;
+import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementService;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
 import org.weathersensor.SpringRESTWeatherSensor.exceptions.MeasurementNotFoundException;
 import org.weathersensor.SpringRESTWeatherSensor.util.MeasurementValidator;
@@ -20,15 +17,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/measurements")
 public class MeasurementsController {
-    private final MeasurementsService measurementsService;
+    private final MeasurementService measurementService;
     private final SensorsService sensorsService;
     private final MeasurementValidator measurementValidator;
 
 //    @PersistenceContext
 
 
-    public MeasurementsController(MeasurementsService measurementsService, SensorsService sensorsService, MeasurementValidator measurementValidator) {
-        this.measurementsService = measurementsService;
+    public MeasurementsController(MeasurementService measurementService, SensorsService sensorsService, MeasurementValidator measurementValidator) {
+        this.measurementService = measurementService;
         this.sensorsService = sensorsService;
         this.measurementValidator = measurementValidator;
     }
@@ -43,7 +40,7 @@ public class MeasurementsController {
     @GetMapping
     public List<MeasurementDto> getAllMeasurements() {
         System.out.println("Пытаемся вернуть все измерения");
-        List<MeasurementDto> allMeasurements = measurementsService.getAllMeasurements();
+        List<MeasurementDto> allMeasurements = measurementService.getAllMeasurements();
         System.out.println(allMeasurements);
 
 //        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -63,7 +60,7 @@ public class MeasurementsController {
 
     @GetMapping("/rainyDaysCount")
     public int getRainyDays() {
-        return measurementsService.getRainyDaysCount();
+        return measurementService.getRainyDaysCount();
     }
 
 
@@ -96,7 +93,7 @@ public class MeasurementsController {
             throw new MeasurementNotFoundException(errorMessage.toString());
         }
 
-        measurementsService.save(measurementDTO);
+        measurementService.save(measurementDTO);
 
         return new ResponseEntity<>("Measurement has been added", HttpStatus.CREATED);
     }
@@ -119,7 +116,7 @@ public class MeasurementsController {
             throw new MeasurementNotFoundException(errorMessage.toString());
         }
 
-        measurementsService.saveAll(measurementDtos);
+        measurementService.saveAll(measurementDtos);
 
         return new ResponseEntity<>("Measurements have been added", HttpStatus.CREATED);
     }

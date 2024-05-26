@@ -8,7 +8,7 @@ import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.MeasurementsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
-import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementsService;
+import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementService;
 
 import java.util.Date;
 import java.util.List;
@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class MeasurementsServiceImpl implements MeasurementsService {
+public class MeasurementServiceImpl implements MeasurementService {
     private final MeasurementsRepository measurementsRepository;
     private final SensorsRepository sensorsRepository;
     private final ModelMapper modelMapper;
 
-    public MeasurementsServiceImpl(MeasurementsRepository measurementsRepository, SensorsRepository sensorsRepository, ModelMapper modelMapper) {
+    public MeasurementServiceImpl(MeasurementsRepository measurementsRepository, SensorsRepository sensorsRepository, ModelMapper modelMapper) {
         this.measurementsRepository = measurementsRepository;
         this.sensorsRepository = sensorsRepository;
         this.modelMapper = modelMapper;

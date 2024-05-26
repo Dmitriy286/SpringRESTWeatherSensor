@@ -5,7 +5,7 @@ import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 
 import java.util.List;
 
-public interface MeasurementsService {
+public interface MeasurementService {
 
     Measurement findById(int id);
 

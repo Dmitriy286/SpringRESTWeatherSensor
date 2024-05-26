@@ -45,7 +45,7 @@ public class SecurityConfig {
 //                    .failureUrl("/auth/login");
 //    }
 
-    //настраивает аутентификацию
+    //настраиваем аутентификацию
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.authenticationProvider(daoAuthenticationProvider());
 //
@@ -61,7 +61,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/secured").authenticated()
                 .antMatchers("/info").authenticated()
-                .antMatchers("/measurements").authenticated()
+//                .antMatchers("/measurements").authenticated()
+                .antMatchers("/measurements").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
