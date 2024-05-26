@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import org.weathersensor.SpringRESTWeatherSensor.dto.MeasurementDTO;
+import org.weathersensor.SpringRESTWeatherSensor.dto.MeasurementDto;
 import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementsService;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
@@ -28,8 +28,8 @@ public class MeasurementValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         try {
-            MeasurementDTO measurementDTO = (MeasurementDTO) target;
-            if (sensorsService.findByName(measurementDTO.getSensor().getName()) == null) {
+            MeasurementDto measurementDTO = (MeasurementDto) target;
+            if (sensorsService.findByName(measurementDTO.getSensorDto().getName()) == null) {
                 errors.rejectValue("sensor", String.valueOf(HttpStatus.NOT_FOUND), "Sensor with such name does not exist");
             }
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.weathersensor.SpringRESTWeatherSensor.controllers.api.OperatorsApiDelegate;
@@ -23,5 +24,12 @@ public class OperatorsApiDelegateImpl implements OperatorsApiDelegate {
     @Override
     public ResponseEntity<List<OperatorDTO>> getOperators(String name, Long personalNumber) {
         return ResponseEntity.ok(operatorsService.getByNameOrNumber(name, personalNumber));
+    }
+
+    @Override
+    public ResponseEntity<Void> addOperator(OperatorDTO operatorDTO) {
+        operatorsService.create(operatorDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

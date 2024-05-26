@@ -29,12 +29,9 @@ public class SensorsServiceImpl implements SensorsService {
     }
 
     public SensorDTO findByName(String name) {
-        Sensor foundSensor = sensorsRepository.findByNameIgnoreCase(name).orElse(null);
-        if (foundSensor == null) {
-            throw new SensorNotFoundException("Sensor with such name does not exist");
-        }
+        var foundSensor = sensorsRepository.findByNameIgnoreCase(name);
 
-        return convertToSensorDTO(foundSensor);
+        return foundSensor.map(this::convertToSensorDTO).orElse(null);
     }
 
     @Transactional

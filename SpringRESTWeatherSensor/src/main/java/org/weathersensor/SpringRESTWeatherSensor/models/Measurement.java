@@ -1,14 +1,24 @@
 package org.weathersensor.SpringRESTWeatherSensor.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "measurement")
 //@JsonIdentityInfo(
@@ -19,13 +29,13 @@ public class Measurement {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "value")
-    private float value;
+    private Float value;
 
     @Column(name = "raining")
-    private boolean raining;
+    private Boolean raining;
 
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
@@ -37,54 +47,4 @@ public class Measurement {
 //    @JsonBackReference
     private Sensor sensor;
 
-    public Measurement() {
-
-    }
-
-    public Measurement(float value, boolean raining, Date time, Sensor sensor) {
-        this.value = value;
-        this.raining = raining;
-        this.time = time;
-        this.sensor = sensor;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float value) {
-        this.value = value;
-    }
-
-    public boolean isRaining() {
-        return raining;
-    }
-
-    public void setRaining(boolean raining) {
-        this.raining = raining;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public Sensor getSensor() {
-        return sensor;
-    }
-
-    public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
-    }
 }
