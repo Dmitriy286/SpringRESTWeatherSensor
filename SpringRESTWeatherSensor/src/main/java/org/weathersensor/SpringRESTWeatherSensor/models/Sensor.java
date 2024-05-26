@@ -28,8 +28,9 @@ public class Sensor {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
+    //TODO: добавить правила валидации
     @Column(name = "name")
     private String name;
 

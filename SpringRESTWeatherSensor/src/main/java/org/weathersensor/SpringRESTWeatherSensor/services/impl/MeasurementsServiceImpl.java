@@ -33,6 +33,7 @@ public class MeasurementsServiceImpl implements MeasurementsService {
         return measurement.orElse(null);
     }
 
+    //TODO: возврат в обертке
     @Override
     public List<MeasurementDto> getAllMeasurements() {
         System.out.println("Входим в метод:");
