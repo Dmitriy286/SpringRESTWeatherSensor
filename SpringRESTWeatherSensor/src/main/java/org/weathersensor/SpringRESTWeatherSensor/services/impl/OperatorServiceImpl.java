@@ -1,12 +1,8 @@
 package org.weathersensor.SpringRESTWeatherSensor.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.weathersensor.SpringRESTWeatherSensor.dto.OperatorDTO;
 import org.weathersensor.SpringRESTWeatherSensor.exceptions.ExceptionEnum;
@@ -33,33 +29,12 @@ public class OperatorServiceImpl implements OperatorsService {
 
     private final OperatorMapper operatorMapper;
 
-//    private final PasswordEncoder passwordEncoder;
-
     private final RegistrationService registrationService;
 
     @Override
     public OperatorDTO getById(Long operatorId) {
         var foundOperator = operatorsRepository.findById(operatorId)
                 .orElseThrow(() -> new NotFoundException(ExceptionEnum.OPERATOR_NOT_FOUND_EXCEPTION.buildExceptionModel()));
-
-
-        //test get creds from session
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-
-        System.out.println("===========");
-        System.out.println(principal.getAuthorities());
-        System.out.println(principal.getUsername());
-        System.out.println(principal.getPassword());
-        System.out.println("===========");
-
-        OperatorDetails operatorDetails = (OperatorDetails) authentication.getPrincipal();
-
-        System.out.println("===========");
-        System.out.println(operatorDetails.getOperator().getName());
-        System.out.println(operatorDetails.getOperator().getPersonalNumber());
-        System.out.println("===========");
 
         return operatorMapper.operatorToOperatorDTO(foundOperator);
     }
@@ -92,6 +67,7 @@ public class OperatorServiceImpl implements OperatorsService {
 
     @Override
     public Operator getByUserName(String username) {
+
         return operatorsRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException(ExceptionEnum.OPERATOR_NOT_FOUND_EXCEPTION.buildExceptionModel()));
     }

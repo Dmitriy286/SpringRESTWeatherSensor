@@ -16,8 +16,6 @@ public interface OperatorMapper {
     List<OperatorDTO> operatorsToOperatorDTOs(List<Operator> operators);
 
     @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "username", ignore = true)
-//    @Mapping(target = "password", ignore = true)
     @Mapping(target = "roles", ignore = true)
     Operator operatorDtoToOperator(OperatorDTO operatorDTO);
 }

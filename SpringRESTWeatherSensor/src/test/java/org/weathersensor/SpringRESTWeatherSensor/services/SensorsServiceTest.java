@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
+import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDto;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
@@ -40,10 +40,10 @@ class SensorsServiceTest {
         Mockito.when(sensorsRepository.findAll()).thenReturn(sensorList);
 
         List<Sensor> expectedSensorList = getSensorList();
-        List<SensorDTO> resultSensorDTOList = sensorsService.findAll();
+        List<SensorDto> resultSensorDtoList = sensorsService.findAll();
 
-        Assertions.assertNotNull(resultSensorDTOList);
-        Assertions.assertEquals(expectedSensorList.toString(), resultSensorDTOList.toString());
+        Assertions.assertNotNull(resultSensorDtoList);
+        Assertions.assertEquals(expectedSensorList.toString(), resultSensorDtoList.toString());
     }
 
     @Test
@@ -52,10 +52,10 @@ class SensorsServiceTest {
         Sensor expectedSensor = sensorList.get(0);
         Mockito.when(sensorsRepository.findByNameIgnoreCase("First")).thenReturn(Optional.of(new Sensor("First")));
 
-        SensorDTO resultSensorDTO = sensorsService.findByName("First");
+        SensorDto resultSensorDto = sensorsService.findByName("First");
 
-        Assertions.assertNotNull(resultSensorDTO);
-        Assertions.assertEquals(expectedSensor.getName(), resultSensorDTO.getName());
+        Assertions.assertNotNull(resultSensorDto);
+        Assertions.assertEquals(expectedSensor.getName(), resultSensorDto.getName());
     }
 
     @Test
@@ -75,10 +75,10 @@ class SensorsServiceTest {
         Sensor sensor1 = new Sensor("First");
         Sensor sensor2 = new Sensor("Second");
 
-        SensorDTO sensorDTO1 = new SensorDTO();
-        sensorDTO1.setName("First");
-        SensorDTO sensorDTO2 = new SensorDTO();
-        sensorDTO2.setName("Second");
+        SensorDto sensorDto1 = new SensorDto();
+        sensorDto1.setName("First");
+        SensorDto sensorDto2 = new SensorDto();
+        sensorDto2.setName("Second");
 
         sensorList.add(sensor1);
         sensorList.add(sensor2);

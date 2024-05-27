@@ -7,13 +7,15 @@ import java.util.List;
 
 public interface MeasurementService {
 
-    Measurement findById(int id);
+    Measurement findById(Integer id);
 
     List<MeasurementDto> getAllMeasurements();
 
     void save(MeasurementDto measurementDTO);
 
-    int getRainyDaysCount();
+    Integer getRainyDaysCount();
 
     void saveAll(List<MeasurementDto> measurementDtos);
+
+    List<MeasurementDto> getAllMeasurementsBySensorId(Long sensorId);
 }

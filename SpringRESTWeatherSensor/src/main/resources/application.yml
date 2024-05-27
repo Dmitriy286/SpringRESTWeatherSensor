@@ -26,7 +26,6 @@ spring:
 
 jwt:
   secret: SECRET
-#  lifetime: 5m
   lifetime: 5
 
 

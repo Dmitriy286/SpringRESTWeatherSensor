@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
+import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDto;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.services.impl.SensorsServiceImpl;
@@ -85,9 +85,9 @@ class SensorControllerTest {
 //                .when(modelMapper.map(sensor2, SensorDTO.class))
 //                .thenReturn(sensorDTO2);
 
-        List<SensorDTO> resultSensorDTOList = sensorController.getSensors();
+        List<SensorDto> resultSensorDtoList = sensorController.getSensors();
 
-        Assertions.assertEquals(sensorList.get(0).getName(), resultSensorDTOList.get(0).getName());
+        Assertions.assertEquals(sensorList.get(0).getName(), resultSensorDtoList.get(0).getName());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/sensors"))
                 .andDo(MockMvcResultHandlers.print())
@@ -149,10 +149,10 @@ class SensorControllerTest {
         Sensor sensor1 = new Sensor("First");
         Sensor sensor2 = new Sensor("Second");
 
-        SensorDTO sensorDTO1 = new SensorDTO();
-        sensorDTO1.setName("First");
-        SensorDTO sensorDTO2 = new SensorDTO();
-        sensorDTO2.setName("Second");
+        SensorDto sensorDto1 = new SensorDto();
+        sensorDto1.setName("First");
+        SensorDto sensorDto2 = new SensorDto();
+        sensorDto2.setName("Second");
 
         sensorList.add(sensor1);
         sensorList.add(sensor2);

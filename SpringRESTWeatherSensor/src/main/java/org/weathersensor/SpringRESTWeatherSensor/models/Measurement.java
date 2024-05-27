@@ -21,9 +21,6 @@ import java.util.Date;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "measurement")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Measurement {
 
     @Id
@@ -39,12 +36,10 @@ public class Measurement {
 
     @Column(name = "time")
     @Temporal(TemporalType.TIMESTAMP)
-//    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date time;
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
-//    @JsonBackReference
     private Sensor sensor;
 
 }

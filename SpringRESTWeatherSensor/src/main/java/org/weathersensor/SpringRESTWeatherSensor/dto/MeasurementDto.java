@@ -16,5 +16,5 @@ public class MeasurementDto {
     @NotEmpty
     private boolean raining;
     @NotEmpty
-    private SensorDTO sensorDto;
+    private SensorDto sensorDto;
 }

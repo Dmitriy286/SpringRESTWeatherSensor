@@ -11,18 +11,13 @@ import org.weathersensor.SpringRESTWeatherSensor.services.RegistrationService;
 @RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
 
-//    private final PasswordEncoder passwordEncoder;
-
     private final ApplicationContext context;
 
     @Override
     public void register(Operator operator) {
-
         PasswordEncoder passwordEncoder = (PasswordEncoder) context.getBean("passwordEncoder");
 
         String encode = passwordEncoder.encode(operator.getPassword());
         operator.setPassword(encode);
-
-        System.out.println("Encoded: " + passwordEncoder.encode("5"));
     }
 }

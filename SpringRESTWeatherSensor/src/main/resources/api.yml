@@ -34,10 +34,6 @@ paths:
           content: {}
         '404':
           description: Not found
-#          content:
-#            application/json:
-#              schema:
-#                $ref: ''
         '500':
           description: Internal server error
     post:

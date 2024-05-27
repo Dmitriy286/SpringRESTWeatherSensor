@@ -1,5 +1,6 @@
 package org.weathersensor.SpringRESTWeatherSensor.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,34 +17,31 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class MeasurementServiceImpl implements MeasurementService {
+
     private final MeasurementsRepository measurementsRepository;
     private final SensorsRepository sensorsRepository;
     private final ModelMapper modelMapper;
 
-    public MeasurementServiceImpl(MeasurementsRepository measurementsRepository, SensorsRepository sensorsRepository, ModelMapper modelMapper) {
-        this.measurementsRepository = measurementsRepository;
-        this.sensorsRepository = sensorsRepository;
-        this.modelMapper = modelMapper;
-    }
-
-    public Measurement findById(int id) {
+    @Override
+    public Measurement findById(Integer id) {
         Optional<Measurement> measurement = measurementsRepository.findById(id);
+
         return measurement.orElse(null);
     }
 
     //TODO: возврат в обертке
     @Override
     public List<MeasurementDto> getAllMeasurements() {
-        System.out.println("Входим в метод:");
-        List<Measurement> measurementList = measurementsRepository.findAll();
-        System.out.println("Нашли измерения");
-        List<MeasurementDto> measurementDtoList = measurementList.stream().map(e -> convertToMeasurementDTO(e)).collect(Collectors.toList());
-        System.out.println("Сконвертили");
-        return measurementDtoList;
+        List<Measurement> measurements = measurementsRepository.findAll();
+
+        return measurements.stream()
+                .map(this::convertToMeasurementDTO)
+                .collect(Collectors.toList());
     }
 
+    @Override
     @Transactional
     public void save(MeasurementDto measurementDTO) {
         Measurement measurement = convertToMeasurement(measurementDTO);
@@ -54,7 +52,8 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
-    public int getRainyDaysCount() {
+    public Integer getRainyDaysCount() {
+
         return measurementsRepository.getRainyDaysCount();
     }
 
@@ -69,20 +68,29 @@ public class MeasurementServiceImpl implements MeasurementService {
         measurementsRepository.saveAll(measurementList);
     }
 
+    @Override
+    public List<MeasurementDto> getAllMeasurementsBySensorId(Long sensorId) {
+        List<Measurement> measurements = measurementsRepository.findBySensorId(sensorId);
+
+        return measurements.stream()
+                .map(this::convertToMeasurementDTO)
+                .collect(Collectors.toList());
+    }
+
     private Measurement convertToMeasurement(MeasurementDto measurementDTO) {
         Measurement measurement = modelMapper.map(measurementDTO, Measurement.class);
-        Sensor sensor = sensorsRepository.findByNameIgnoreCase(measurementDTO.getSensorDto().getName()).orElse(null);
+
+        String sensorName = measurementDTO.getSensorDto().getName();
+        Sensor sensor = sensorsRepository.findByNameIgnoreCase(sensorName)
+                .orElse(null);
         measurement.setSensor(sensor);
+
         return measurement;
     }
 
     private MeasurementDto convertToMeasurementDTO(Measurement measurement) {
-        MeasurementDto measurementDTO = modelMapper.map(measurement, MeasurementDto.class);
-        System.out.println("measurement:");
-        System.out.println(measurement);
-        System.out.println("measurementDTO:");
-        System.out.println(measurementDTO);
-        return measurementDTO;
+
+        return modelMapper.map(measurement, MeasurementDto.class);
     }
 
     private void enrichMeasurement(Measurement measurement) {

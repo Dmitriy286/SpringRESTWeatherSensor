@@ -1,22 +1,20 @@
 package org.weathersensor.SpringRESTWeatherSensor.services;
 
-import org.springframework.transaction.annotation.Transactional;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
+import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDto;
+import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDto;
 
 import java.util.List;
 
 public interface SensorsService {
 
-    List<SensorDTO> findAll();
+    List<SensorDto> findAll();
 
-    SensorDTO findByName(String name);
+    SensorDto findByName(String name);
 
-    void save(SensorDTO sensorDTO);
+    void save(SensorDto sensorDTO);
 
-    SensorDTO update(UpdatedSensorDTO updatedSensorDTO);
+    SensorDto update(UpdatedSensorDto updatedSensorDTO);
 
-    void delete(SensorDTO sensorDTO);
+    void delete(SensorDto sensorDTO);
 
 }
