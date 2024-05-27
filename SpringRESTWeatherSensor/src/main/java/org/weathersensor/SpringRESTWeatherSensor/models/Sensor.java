@@ -20,9 +20,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "sensor")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Sensor {
 
     @Id
@@ -30,15 +27,10 @@ public class Sensor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //TODO: добавить правила валидации
     @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "sensor")
-//    @JsonManagedReference
     @JsonIgnore
-//    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Measurement> measurementList;
-
-
 }

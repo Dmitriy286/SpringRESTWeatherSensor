@@ -36,7 +36,6 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         String jwt = null;
 
         if (Objects.nonNull(authHeader) && authHeader.startsWith("Bearer ")) {
-//            jwt = authHeader.substring(PREFIX_CHARS_COUNT);
             jwt = authHeader.substring(7);
 
             System.out.println("jwt: " + jwt);

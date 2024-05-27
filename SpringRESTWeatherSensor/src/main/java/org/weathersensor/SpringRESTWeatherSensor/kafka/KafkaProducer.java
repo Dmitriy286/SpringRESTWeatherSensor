@@ -24,7 +24,6 @@ public class KafkaProducer {
             allMeasurements.forEach(measurement -> {
                 kafkaTemplate.send("measurements", measurement);
             });
-//            kafkaTemplate.send("poems_4", "1", "first_from_app");
         };
     }
 }

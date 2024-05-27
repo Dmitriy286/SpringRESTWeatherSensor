@@ -1,10 +1,11 @@
 package org.weathersensor.SpringRESTWeatherSensor.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
+import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDto;
+import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDto;
 import org.weathersensor.SpringRESTWeatherSensor.models.Sensor;
 import org.weathersensor.SpringRESTWeatherSensor.repositories.SensorsRepository;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
@@ -13,35 +14,31 @@ import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotFoundExcept
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class SensorsServiceImpl implements SensorsService {
+
     private final SensorsRepository sensorsRepository;
     private final ModelMapper modelMapper;
 
-
-    public SensorsServiceImpl(SensorsRepository sensorsRepository, ModelMapper modelMapper) {
-        this.sensorsRepository = sensorsRepository;
-        this.modelMapper = modelMapper;
-    }
-
-    public List<SensorDTO> findAll() {
+    public List<SensorDto> findAll() {
         return sensorsRepository.findAll().stream().map(this::convertToSensorDTO).toList();
     }
 
-    public SensorDTO findByName(String name) {
+    public SensorDto findByName(String name) {
         var foundSensor = sensorsRepository.findByNameIgnoreCase(name);
 
         return foundSensor.map(this::convertToSensorDTO).orElse(null);
     }
 
     @Transactional
-    public void save(SensorDTO sensorDTO) {
+    public void save(SensorDto sensorDTO) {
         sensorsRepository.save(convertToSensorDTO(sensorDTO));
     }
 
     @Transactional
-    public SensorDTO update(UpdatedSensorDTO updatedSensorDTO) {
+    public SensorDto update(UpdatedSensorDto updatedSensorDTO) {
         Sensor updatedSensor = sensorsRepository.findByNameIgnoreCase(updatedSensorDTO.getName()).orElse(null);
+
         if (updatedSensor == null) {
             throw new SensorNotFoundException("Sensor with such name does not exist");
         }
@@ -53,21 +50,23 @@ public class SensorsServiceImpl implements SensorsService {
     }
 
     @Transactional
-    public void delete(SensorDTO sensorDTO) {
+    public void delete(SensorDto sensorDTO) {
         Sensor deletedSensor = sensorsRepository.findByNameIgnoreCase(sensorDTO.getName()).orElse(null);
+
         if (deletedSensor == null) {
             throw new SensorNotFoundException("Sensor with such name does not exist");
         }
+
         sensorsRepository.delete(convertToSensorDTO(sensorDTO));
     }
 
-    private Sensor convertToSensorDTO(SensorDTO sensorDTO) {
+    private Sensor convertToSensorDTO(SensorDto sensorDTO) {
         Sensor sensor = modelMapper.map(sensorDTO, Sensor.class);
 
         return sensor;
     }
 
-    private Sensor convertToSensor(UpdatedSensorDTO updatedSensorDTO) {
+    private Sensor convertToSensor(UpdatedSensorDto updatedSensorDTO) {
         Sensor sensor = modelMapper.map(updatedSensorDTO, Sensor.class);
 
         Sensor currentSensor = sensorsRepository.findByNameIgnoreCase(updatedSensorDTO.getName()).orElse(null);
@@ -81,12 +80,9 @@ public class SensorsServiceImpl implements SensorsService {
         return sensor;
     }
 
-    private SensorDTO convertToSensorDTO(Sensor sensor) {
-        System.out.println("Init converting...");
-        System.out.println(sensor);
-        SensorDTO sensorDTO = modelMapper.map(sensor, SensorDTO.class);
-        System.out.println("sensorDTO:");
-        System.out.println(sensorDTO);
+    private SensorDto convertToSensorDTO(Sensor sensor) {
+        SensorDto sensorDTO = modelMapper.map(sensor, SensorDto.class);
+
         return sensorDTO;
     }
 }

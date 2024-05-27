@@ -11,7 +11,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import org.weathersensor.SpringRESTWeatherSensor.models.Measurement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +37,6 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    //    public ProducerFactory<String, Measurement>
     public ProducerFactory<String, Object> producerFactory(ObjectMapper objectMapper) {
         DefaultKafkaProducerFactory<String, Object> kafkaProducerFactory = new DefaultKafkaProducerFactory<>(producerConfig());
 
@@ -48,7 +46,6 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    //    public KafkaTemplate<String, Measurement>
     public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }

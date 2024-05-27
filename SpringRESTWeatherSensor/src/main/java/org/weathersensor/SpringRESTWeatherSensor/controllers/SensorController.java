@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDTO;
-import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDTO;
+import org.weathersensor.SpringRESTWeatherSensor.dto.SensorDto;
+import org.weathersensor.SpringRESTWeatherSensor.dto.UpdatedSensorDto;
 import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotCreatedException;
 import org.weathersensor.SpringRESTWeatherSensor.exceptions.SensorNotFoundException;
 import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
@@ -34,17 +34,17 @@ public class SensorController {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @GetMapping
-    public List<SensorDTO> getSensors() {
+    public List<SensorDto> getSensors() {
         return sensorsService.findAll();
     }
 
     @GetMapping("/{name}")
-    public SensorDTO getSensorByName(@PathVariable("name") String name) {
+    public SensorDto getSensorByName(@PathVariable("name") String name) {
         return sensorsService.findByName(name);
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<String> register(@RequestBody @Valid SensorDTO sensorDto,
+    public ResponseEntity<String> register(@RequestBody @Valid SensorDto sensorDto,
                                            BindingResult bindingResult) {
 
         sensorValidator.validate(sensorDto, bindingResult);
@@ -71,7 +71,7 @@ public class SensorController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<String> updateSensor(@RequestBody @Valid UpdatedSensorDTO updatedSensorDTO,
+    public ResponseEntity<String> updateSensor(@RequestBody @Valid UpdatedSensorDto updatedSensorDTO,
                                            BindingResult bindingResult) {
         sensorValidator.validate(updatedSensorDTO, bindingResult);
 
@@ -100,13 +100,13 @@ public class SensorController {
     }
 
     @DeleteMapping("/delete")
-    private ResponseEntity<String> deleteSensor(@RequestBody SensorDTO sensorDTO) {
+    private ResponseEntity<String> deleteSensor(@RequestBody SensorDto sensorDTO) {
         sensorsService.delete(sensorDTO);
 
         return new ResponseEntity<>("Sensor has been deleted", HttpStatus.OK);
     }
 
-    private void sendMessageToKafka(SensorDTO sensorDto) {
+    private void sendMessageToKafka(SensorDto sensorDto) {
         kafkaTemplate.send("new-sensors", sensorDto);
     }
 }

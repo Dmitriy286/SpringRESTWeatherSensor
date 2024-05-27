@@ -26,17 +26,6 @@ public class AspectExceptionHandler {
         return createExceptionResponse(errorMapper.toExceptionModel(exception), HttpStatus.CONFLICT);
     }
 
-//    @ExceptionHandler
-//    private ResponseEntity<ExceptionResponse> handleException(SensorNotFoundException exception) {
-//        ExceptionResponse response = new ExceptionResponse(
-//                exception.getMessage(),
-//                new Date()
-//        );
-//        ResponseEntity<ExceptionResponse> responseEntity = new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-//
-//        return responseEntity;
-//    }
-
     private ResponseEntity<ExceptionModel> createExceptionResponse(ExceptionModel exceptionModel, HttpStatus httpStatus) {
         return new ResponseEntity<>(exceptionModel, httpStatus);
     }

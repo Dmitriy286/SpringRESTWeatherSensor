@@ -1,59 +1,40 @@
 package org.weathersensor.SpringRESTWeatherSensor.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.weathersensor.SpringRESTWeatherSensor.dto.MeasurementDto;
-import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementService;
-import org.weathersensor.SpringRESTWeatherSensor.services.SensorsService;
 import org.weathersensor.SpringRESTWeatherSensor.exceptions.MeasurementNotFoundException;
+import org.weathersensor.SpringRESTWeatherSensor.services.MeasurementService;
 import org.weathersensor.SpringRESTWeatherSensor.util.MeasurementValidator;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.validation.Valid;
+import java.time.Duration;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/measurements")
-public class MeasurementsController {
+public class MeasurementController {
+
     private final MeasurementService measurementService;
-    private final SensorsService sensorsService;
     private final MeasurementValidator measurementValidator;
-
-//    @PersistenceContext
-
-
-    public MeasurementsController(MeasurementService measurementService, SensorsService sensorsService, MeasurementValidator measurementValidator) {
-        this.measurementService = measurementService;
-        this.sensorsService = sensorsService;
-        this.measurementValidator = measurementValidator;
-    }
-
-//    @GetMapping
-//    public ResponseEntity<List<MeasurementDTO>> getAllMeasurements() {
-//        List<MeasurementDTO> measurementList = measurementsService.getAllMeasurements();
-//
-//        return new ResponseEntity<>(measurementList, HttpStatus.OK);
-//    }
 
     @GetMapping
     public List<MeasurementDto> getAllMeasurements() {
-        System.out.println("Пытаемся вернуть все измерения");
         List<MeasurementDto> allMeasurements = measurementService.getAllMeasurements();
-        System.out.println(allMeasurements);
-
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        OperatorDetails operatorDetails = (OperatorDetails) authentication.getPrincipal();
-
-//        System.out.println("Person Details");
-//        System.out.println(operatorDetails.getOperator());
-//        System.out.println(authentication.getPrincipal());
-//        System.out.println(authentication.getAuthorities());
-//        System.out.println(authentication.getCredentials());
-//        System.out.println(authentication.getDetails());
-//        System.out.println(authentication.isAuthenticated());
-
 
         return allMeasurements;
     }
@@ -63,15 +44,21 @@ public class MeasurementsController {
         return measurementService.getRainyDaysCount();
     }
 
+    @GetMapping(value="/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<ResponseEntity<List<MeasurementDto>>> getAllMeasurementsBySensor(@RequestParam Long sensorId) {
 
+        Flux<Long> interval = Flux.interval(Duration.ofSeconds(2));
 
-
-
-
-    //    @GetMapping("/{sensorId}")
-    //    public List<MeasurementDTO> getSensorByName(@PathVariable("sensorId") int sensorId) {
-    //        return sensorsService.findByName(name);
-    //    }
+        return Mono.fromCallable(() -> measurementService.getAllMeasurementsBySensorId(sensorId))
+                .subscribeOn(Schedulers.boundedElastic())
+                .map(ResponseEntity::ok)
+                .concatWith(
+                        interval
+                                .flatMap(aLong -> Mono.fromCallable(() -> measurementService.getAllMeasurementsBySensorId(sensorId)))
+                                .subscribeOn(Schedulers.boundedElastic())
+                                .map(ResponseEntity::ok)
+                );
+    }
 
     @PostMapping("/add")
     public ResponseEntity<String> addNewMeasurement(@RequestBody @Valid MeasurementDto measurementDTO,

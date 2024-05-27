@@ -13,7 +13,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MeasurementsControllerTest {
+class MeasurementControllerTest {
 
     @Test
     void getAllMeasurements() {
